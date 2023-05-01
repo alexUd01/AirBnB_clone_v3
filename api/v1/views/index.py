@@ -7,4 +7,4 @@ import json
 @app_views.route('/status')
 def status():
     """Return api status"""
-    return json.dumps({'status': 'OK'})
+    return json.dumps({'status': 'OK'}) + '\n'
