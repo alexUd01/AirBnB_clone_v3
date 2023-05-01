@@ -1,16 +1,9 @@
 #!/usr/bin/python3
 """Create route"""
 from api.v1.views import app_views
-import json
 from flask import make_response
 from models import storage
-
-
-def prettify(dict_obj):
-    """prettily serializes dictionary objects to json string"""
-    if not isinstance(dict_obj, dict):
-        raise TypeError('"dict_object" must be a python dictionary')
-    return json.dumps(dict_obj, indent=2) + "\n"
+from api.v1.functions import prettify
 
 
 @app_views.route('/status')
