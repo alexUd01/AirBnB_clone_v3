@@ -1,30 +1,30 @@
 #!/usr/bin/python3
-"""Create route"""
+"""index"""
 from api.v1.views import app_views
-from flask import make_response
+from flask import jsonify
 from models import storage
-from api.v1.functions import prettify
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+
+classes = {"users": "User", "places": "Place", "states": "State",
+           "cities": "City", "amenities": "Amenity",
+           "reviews": "Review"}
 
 
-@app_views.route('/status', strict_slashes=False)
+@app_views.route('/status', methods=['GET'])
 def status():
-    """Return api status"""
-    resp = make_response(prettify({'status': 'OK'}))
-    resp.headers['Content-Type'] = 'application/json'
-    return resp
+    ''' routes to status page '''
+    return jsonify({'status': 'OK'})
 
 
-@app_views.route('/stats', strict_slashes=False)
-def stats():
-    """Return api stat"""
-    stat = {
-        "amenities": storage.count("Amenity"),
-        "cities": storage.count("City"),
-        "places": storage.count("Place"),
-        "reviews": storage.count("Review"),
-        "states": storage.count("State"),
-        "users": storage.count("User")
-    }
-    resp = make_response(prettify(stat))
-    resp.headers['Content-Type'] = 'application/json'
-    return resp
+@app_views.route('/stats', methods=['GET'])
+def count():
+    '''retrieves the number of each objects by type'''
+    count_dict = {}
+    for cls in classes:
+        count_dict[cls] = storage.count(classes[cls])
+    return jsonify(count_dict)
