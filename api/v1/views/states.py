@@ -56,10 +56,17 @@ def states(state_id=None):
             data = request.get_json()
             state_name = data['name']
         except KeyError:
-            return "Missing name", 400
+            return "Missing name\n", 400
         except Exception:
-            return "Not a JSON", 400
+            return "Not a JSON\n", 400
         else:
+            # Disallow created_at, updated_at and id
+            if data.get('created_at', None):
+                del data['created_at']
+            if data.get('updated_at', None):
+                del data['updated_at']
+            if data.get('id', None):
+                del data['id']
             new_state = State(**data)
             storage.new(new_state)
             storage.save()
@@ -76,9 +83,10 @@ def states(state_id=None):
             except KeyError:
                 abort(404)
             except Exception:
-                return "Not a JSON", 400
+                return "Not a JSON\n", 400
             else:
                 for k, v in data.items():
+                    # Disallow created_at, updated_at and id
                     if k not in ('id', 'created_at', 'updated_at'):
                         setattr(state_obj, k, v)
                         setattr(state_obj, 'updated_at', datetime.utcnow())
