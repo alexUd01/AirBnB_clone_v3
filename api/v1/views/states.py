@@ -6,6 +6,7 @@ from models import storage
 from models.state import State
 from flask import make_response, request, abort
 from api.v1.functions import prettify
+from datetime import datetime
 
 allowed_methods_1 = ['GET', 'HEAD', 'OPTIONS', 'POST']
 allowed_methods_2 = ['GET', 'HEAD', 'OPTIONS', 'PUT', 'DELETE']
@@ -80,6 +81,7 @@ def states(state_id=None):
                 for k, v in data.items():
                     if k not in ('id', 'created_at', 'updated_at'):
                         setattr(state_obj, k, v)
+                        setattr(state_obj, 'updated_at', datetime.utcnow())
                 storage.all(State)[key] = state_obj
                 storage.save()
                 resp = make_response(prettify(state_obj.to_dict()))
