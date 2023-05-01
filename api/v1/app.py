@@ -15,6 +15,7 @@ def disconnect(message):
     """Close connection to storage engine"""
     storage.close()
 
+
 @app.errorhandler(404)
 def error404(err):
     """Custom error message"""
