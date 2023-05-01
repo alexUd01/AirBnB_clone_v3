@@ -6,7 +6,7 @@ from models import storage
 from api.v1.functions import prettify
 
 
-@app_views.route('/status')
+@app_views.route('/status', strict_slashes=False)
 def status():
     """Return api status"""
     resp = make_response(prettify({'status': 'OK'}))
@@ -14,7 +14,7 @@ def status():
     return resp
 
 
-@app_views.route('/stats')
+@app_views.route('/stats', strict_slashes=False)
 def stats():
     """Return api stat"""
     stat = {
