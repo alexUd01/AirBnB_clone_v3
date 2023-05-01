@@ -78,7 +78,7 @@ def states(state_id=None):
                 return "Not a JSON", 400
             else:
                 for k, v in data.items():
-                    if not k in ('id', 'created_at', 'updated_at'):
+                    if k not in ('id', 'created_at', 'updated_at'):
                         setattr(state_obj, k, v)
                 storage.all(State)[key] = state_obj
                 storage.save()
